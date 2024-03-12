@@ -2,8 +2,10 @@
 using FluentValidation;
 using MediatR;
 using Order.API.Application.Dto;
+using Order.API.Application.Events;
 using Order.API.Application.Helpers;
 using Order.API.Application.Interfaces.Repository;
+using Order.API.Application.Queue;
 using Order.API.Application.Wrappers;
 using Order.API.Domain.Entities;
 using System;
@@ -55,14 +57,16 @@ namespace Order.API.Application.Features.Commands
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
         private readonly IValidationHelper _validationHelper;
+        private readonly RabbitMQPublisher _rabbitMQPublisher;
 
 
-        public CreateOrderCommandHandler(IMapper mapper, IOrderRepository orderRepository, HttpClient httpClient, IValidationHelper validationHelper)
+        public CreateOrderCommandHandler(IMapper mapper, IOrderRepository orderRepository, HttpClient httpClient, IValidationHelper validationHelper, RabbitMQPublisher rabbitMQPublisher)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
             _httpClient = httpClient;
             _validationHelper = validationHelper;
+            _rabbitMQPublisher = rabbitMQPublisher;
         }
 
         public async Task<ServiceResponse<Guid>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -80,6 +84,15 @@ namespace Order.API.Application.Features.Commands
             var order = _mapper.Map<Domain.Entities.Order>(request);
 
             await _orderRepository.Create(order);
+
+            var publishEvent = new OrderChangedEvent
+            {
+                EventType = EventType.Update,
+                OldOrder = null,
+                NewOrder = order,
+            };
+
+            _rabbitMQPublisher.Publish(publishEvent);
 
             return new ServiceResponse<Guid>(order.Id);
         }

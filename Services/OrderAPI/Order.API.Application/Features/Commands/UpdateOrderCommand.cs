@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
+using Order.API.Application.Events;
 using Order.API.Application.Helpers;
 using Order.API.Application.Interfaces.Repository;
+using Order.API.Application.Queue;
 using Order.API.Application.Wrappers;
 using Order.API.Domain.Entities;
 using System;
@@ -44,11 +46,13 @@ namespace Order.API.Application.Features.Commands
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IValidationHelper _validationHelper;
+        private readonly RabbitMQPublisher _rabbitMQPublisher;
 
-        public UpdateOrderCommandHandler(IOrderRepository orderRepository, IValidationHelper validationHelper)
+        public UpdateOrderCommandHandler(IOrderRepository orderRepository, IValidationHelper validationHelper, RabbitMQPublisher rabbitMQPublisher)
         {
             _orderRepository = orderRepository;
             _validationHelper = validationHelper;
+            _rabbitMQPublisher = rabbitMQPublisher;
         }
 
         public async Task<ServiceResponse<bool>> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
@@ -63,6 +67,19 @@ namespace Order.API.Application.Features.Commands
             if (existingOrder == null)
                 return new ServiceResponse<bool>(false);
 
+            var oldOrder = new Domain.Entities.Order
+            {
+                Id = existingOrder.Id,
+                CustomerId = existingOrder.CustomerId,
+                Quantity = existingOrder.Quantity,
+                Price = existingOrder.Price,
+                Status = existingOrder.Status,
+                Address = existingOrder.Address,
+                Product = existingOrder.Product,
+                CreatedAt = existingOrder.CreatedAt,
+                UpdatedAt = existingOrder.UpdatedAt,
+            };
+
             existingOrder.Quantity = request.Quantity;
             existingOrder.Price = request.Price;
             existingOrder.Status = request.Status;
@@ -70,6 +87,15 @@ namespace Order.API.Application.Features.Commands
             existingOrder.Product = request.Product;
 
             await _orderRepository.Update(existingOrder);
+
+            var publishEvent = new OrderChangedEvent
+            {
+                EventType = EventType.Update,
+                OldOrder = oldOrder,
+                NewOrder = existingOrder
+            };
+
+            _rabbitMQPublisher.Publish(publishEvent);
 
             return new ServiceResponse<bool>(true);
         }

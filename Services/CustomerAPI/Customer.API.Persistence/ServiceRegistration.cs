@@ -1,4 +1,5 @@
-﻿using Customer.API.Application.Interfaces.Repository;
+﻿using Customer.API.Application.Helpers;
+using Customer.API.Application.Interfaces.Repository;
 using Customer.API.Persistence.Context;
 using Customer.API.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace Customer.API.Persistence
             });
 
             serviceCollection.AddTransient<ICustomerRepository, CustomerRepository>();
+            serviceCollection.AddTransient<IValidationHelper, ValidationHelper>();
         }
     }
 }
