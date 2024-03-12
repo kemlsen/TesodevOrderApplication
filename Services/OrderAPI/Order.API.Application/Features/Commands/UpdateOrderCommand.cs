@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Order.API.Application.Helpers;
 using Order.API.Application.Interfaces.Repository;
 using Order.API.Application.Wrappers;
 using Order.API.Domain.Entities;
@@ -42,14 +43,21 @@ namespace Order.API.Application.Features.Commands
     public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, ServiceResponse<bool>>
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IValidationHelper _validationHelper;
 
-        public UpdateOrderCommandHandler(IOrderRepository orderRepository)
+        public UpdateOrderCommandHandler(IOrderRepository orderRepository, IValidationHelper validationHelper)
         {
             _orderRepository = orderRepository;
+            _validationHelper = validationHelper;
         }
 
         public async Task<ServiceResponse<bool>> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
+            var error = await _validationHelper.ValidateAsync(request);
+
+            if (!string.IsNullOrEmpty(error))
+                throw new Exception(error);
+
             var existingOrder = await _orderRepository.GetById(request.OrderId);
 
             if (existingOrder == null)

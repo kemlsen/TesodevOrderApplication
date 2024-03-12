@@ -19,7 +19,6 @@ namespace Customer.API.Persistence.Repositories
         {
             return await dbContext.Customers
                 .Include(c => c.Address)
-                .Include(c => c.Orders)
                 .ToListAsync();
         }
 
@@ -27,7 +26,6 @@ namespace Customer.API.Persistence.Repositories
         {
             return await dbContext.Customers
                 .Include(c => c.Address)
-                .Include(c => c.Orders)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }

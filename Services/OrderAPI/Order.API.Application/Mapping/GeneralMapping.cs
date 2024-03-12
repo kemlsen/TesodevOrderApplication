@@ -15,7 +15,6 @@ namespace Order.API.Application.Mapping
         {
             CreateMap<Domain.Entities.Order, CreateOrderCommand>().ReverseMap();
             CreateMap<Domain.Entities.Order, GetOrderDto>().ReverseMap();
-            CreateMap<Domain.Entities.Customer, CustomerDto>().ReverseMap();
             CreateMap<Domain.Entities.Address, AddressDto>().ReverseMap();
             CreateMap<Domain.Entities.Product, ProductDto>().ReverseMap();
         }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Order.API.Application.Helpers;
 using Order.API.Application.Interfaces.Repository;
 using Order.API.Application.Wrappers;
 using System;
@@ -25,14 +26,21 @@ namespace Order.API.Application.Features.Commands
     public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, ServiceResponse<bool>>
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IValidationHelper _validationHelper;
 
-        public DeleteOrderCommandHandler(IOrderRepository orderRepository)
+        public DeleteOrderCommandHandler(IOrderRepository orderRepository, IValidationHelper validationHelper)
         {
             _orderRepository = orderRepository;
+            _validationHelper = validationHelper;
         }
 
         public async Task<ServiceResponse<bool>> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
+            var error = await _validationHelper.ValidateAsync(request);
+
+            if (!string.IsNullOrEmpty(error))
+                throw new Exception(error);
+
             var existingOrder = await _orderRepository.GetById(request.Id);
 
             if (existingOrder == null)

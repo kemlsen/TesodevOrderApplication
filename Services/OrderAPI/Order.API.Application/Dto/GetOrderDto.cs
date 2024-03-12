@@ -10,7 +10,6 @@ namespace Order.API.Application.Dto
     public class GetOrderDto
     {
         public Guid CustomerId { get; set; }
-        public Customer Customer { get; set; }
         public int Quantity { get; set; }
         public double Price { get; set; }
         public string Status { get; set; }

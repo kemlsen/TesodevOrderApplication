@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Order.API.Application.Helpers;
 using Order.API.Application.Interfaces.Repository;
 using Order.API.Persistence.Context;
 using Order.API.Persistence.Repositories;
@@ -23,6 +24,7 @@ namespace Order.API.Persistence
 
             serviceCollection.AddTransient<IOrderRepository, OrderRepository>();
             serviceCollection.AddTransient<HttpClient>();
+            serviceCollection.AddTransient<IValidationHelper,ValidationHelper>();
         }
     }
 }

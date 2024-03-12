@@ -10,7 +10,7 @@ using Order.API.Persistence.Context;
 namespace Order.API.Persistence.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20240311211513_Initial")]
+    [Migration("20240312141204_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,34 +50,6 @@ namespace Order.API.Persistence.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("Order.API.Domain.Entities.Customer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("Customer");
-                });
-
             modelBuilder.Entity("Order.API.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -112,8 +84,6 @@ namespace Order.API.Persistence.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
@@ -142,26 +112,11 @@ namespace Order.API.Persistence.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("Order.API.Domain.Entities.Customer", b =>
-                {
-                    b.HasOne("Order.API.Domain.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("Order.API.Domain.Entities.Order", b =>
                 {
                     b.HasOne("Order.API.Domain.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId");
-
-                    b.HasOne("Order.API.Domain.Entities.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("Order.API.Domain.Entities.Product", "Product")
                         .WithMany()
@@ -169,14 +124,7 @@ namespace Order.API.Persistence.Migrations
 
                     b.Navigation("Address");
 
-                    b.Navigation("Customer");
-
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Order.API.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
