@@ -87,7 +87,7 @@ namespace Order.API.Application.Features.Commands
 
             var publishEvent = new OrderChangedEvent
             {
-                EventType = EventType.Update,
+                EventType = EventType.Create,
                 OldOrder = null,
                 NewOrder = order,
             };

@@ -1,5 +1,7 @@
 using Consumer.API.BackgroundServices;
 using Consumer.API.Context;
+using Consumer.API.Excel;
+using Consumer.API.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +31,10 @@ namespace Consumer.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ConsumerDbContext>();
+            services.AddSingleton<ExcelUtilities>();
+            services.AddSingleton<IEmailHelper, EMailHelper>();
             services.AddHostedService<EventConsumerBackgroundService>();
+            services.AddHostedService<SendEmailBackgroundService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
