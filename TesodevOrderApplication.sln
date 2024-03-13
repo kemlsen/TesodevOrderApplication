@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIGateway", "APIGateway\APIGateway.csproj", "{94C0167D-788F-4FE1-A404-64C261D77EDA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{99DE4992-AC06-4B01-B6A6-39F73F983FDD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.API", "Services\OrderAPI\Order.API\Order.API.csproj", "{F789C419-3C4E-44CE-A5B6-A5FA8133607B}"
@@ -29,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.API.Persistence", "Se
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConsumerAPI", "ConsumerAPI", "{59560ED1-317B-4E80-853D-F153945DA0EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer.API", "Services\Consumer.API\Consumer.API.csproj", "{9A4C481C-BEA0-4FDD-A4CE-90AD2455293C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer.API", "Services\Consumer.API\Consumer.API.csproj", "{9A4C481C-BEA0-4FDD-A4CE-90AD2455293C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{94C0167D-788F-4FE1-A404-64C261D77EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94C0167D-788F-4FE1-A404-64C261D77EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94C0167D-788F-4FE1-A404-64C261D77EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94C0167D-788F-4FE1-A404-64C261D77EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F789C419-3C4E-44CE-A5B6-A5FA8133607B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F789C419-3C4E-44CE-A5B6-A5FA8133607B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F789C419-3C4E-44CE-A5B6-A5FA8133607B}.Release|Any CPU.ActiveCfg = Release|Any CPU
