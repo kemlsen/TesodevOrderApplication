@@ -12,7 +12,7 @@ namespace Order.API.Persistence.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        private readonly OrderDbContext dbContext;
+        protected readonly OrderDbContext dbContext;
         public GenericRepository(OrderDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -33,17 +33,17 @@ namespace Order.API.Persistence.Repositories
             return entity;
         }
 
-        public async Task<List<T>> GetAll()
+        public virtual async Task<List<T>> GetAll()
         {
             return await dbContext.Set<T>().ToListAsync();
         }
 
-        public Task<List<T>> GetAllById(Guid id)
+        public virtual Task<List<T>> GetAllById(Guid id)
         {
             return dbContext.Set<T>().Where(x => x.Id == id).ToListAsync();
         }
 
-        public async Task<T> GetById(Guid id)
+        public virtual async Task<T> GetById(Guid id)
         {
             return await dbContext.Set<T>().FindAsync(id);
         }

@@ -26,6 +26,7 @@ namespace Customer.API.Persistence.Repositories
         {
             return await dbContext.Customers
                 .Include(c => c.Address)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }

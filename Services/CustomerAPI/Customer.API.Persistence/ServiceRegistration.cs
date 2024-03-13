@@ -22,8 +22,8 @@ namespace Customer.API.Persistence
                 options.UseNpgsql("Server=localhost; Database=CustomerAPIDb; Port=5432; User Id=postgres; Password=123456; Timeout=30; Command Timeout=30;");
             });
 
-            serviceCollection.AddTransient<ICustomerRepository, CustomerRepository>();
-            serviceCollection.AddTransient<IValidationHelper, ValidationHelper>();
+            serviceCollection.AddScoped<ICustomerRepository, CustomerRepository>();
+            serviceCollection.AddScoped<IValidationHelper, ValidationHelper>();
         }
     }
 }
