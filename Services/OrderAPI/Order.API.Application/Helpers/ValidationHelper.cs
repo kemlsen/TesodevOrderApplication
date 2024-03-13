@@ -16,6 +16,7 @@ namespace Order.API.Application.Helpers
             new CreateOrderCommandValidator(),
             new DeleteOrderCommandValidator(),
             new UpdateOrderCommandValidator(),
+            new ChangeStatusCommandValidator()
         };
 
         public async Task<string> ValidateAsync(object obj)

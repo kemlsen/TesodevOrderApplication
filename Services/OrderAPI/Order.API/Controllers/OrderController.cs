@@ -39,6 +39,11 @@ namespace Order.API.Controllers
         public async Task<ActionResult<List<GetOrderDto>>> Get(GetOrdersQuery request)
             => await _mediator.Send(request);
 
+        [HttpPost("ChangeStatus")]
+        public async Task<ActionResult<ServiceResponse<bool>>> ChangeStatus(ChangeStatusCommand request)
+           => await _mediator.Send(request);
+
+
         [HttpGet("Get/{id}")]
         public async Task<ActionResult<List<GetOrderDto>>> Get(Guid id)
         {

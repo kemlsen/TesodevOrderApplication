@@ -39,7 +39,7 @@ namespace Order.API.Application.Features.Queries
 
         public async Task<List<GetOrderDto>> Handle(GetOrdersByIdQuery request, CancellationToken cancellationToken)
         {
-            var order = _orderRepository.GetAllById(request.Id);
+            var order =  await _orderRepository.GetAllById(request.Id);
 
             return _mapper.Map<List<GetOrderDto>>(order);
         }

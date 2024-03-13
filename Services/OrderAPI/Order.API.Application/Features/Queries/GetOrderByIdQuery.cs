@@ -41,7 +41,7 @@ namespace Order.API.Application.Features.Queries
 
         public async Task<GetOrderDto> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
         {
-            var order = _orderRepository.GetById(request.Id);
+            var order = await _orderRepository.GetById(request.Id);
 
             return _mapper.Map<GetOrderDto>(order);
         }
